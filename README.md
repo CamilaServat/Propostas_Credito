@@ -44,7 +44,7 @@ Isso iniciará um container PostgreSQL na porta 5433.
 Na raiz do projeto, rode:
 
 ```bash
-./mvnw spring-boot:run
+mvn clean spring-boot:run
 ```
 
 ---
