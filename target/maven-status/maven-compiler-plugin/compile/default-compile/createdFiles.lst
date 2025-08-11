@@ -1,0 +1,9 @@
+br\com\credit\creditproposals\application\service\ProposalService.class
+br\com\credit\creditproposals\domain\model\Installment.class
+br\com\credit\creditproposals\domain\model\Proposal.class
+br\com\credit\creditproposals\domain\model\InstallmentStatus.class
+br\com\credit\creditproposals\CreditProposalsApplication.class
+br\com\credit\creditproposals\domain\repository\ProposalRepository.class
+br\com\credit\creditproposals\presentation\controller\ProposalController.class
+br\com\credit\creditproposals\presentation\dto\ProposalRequest.class
+br\com\credit\creditproposals\application\exception\GlobalExceptionHandler.class

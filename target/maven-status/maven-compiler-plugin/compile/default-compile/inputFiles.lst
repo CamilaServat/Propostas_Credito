@@ -1,0 +1,9 @@
+C:\credit-proposals\src\main\java\br\com\credit\creditproposals\presentation\controller\ProposalController.java
+C:\credit-proposals\src\main\java\br\com\credit\creditproposals\domain\model\Installment.java
+C:\credit-proposals\src\main\java\br\com\credit\creditproposals\application\exception\GlobalExceptionHandler.java
+C:\credit-proposals\src\main\java\br\com\credit\creditproposals\domain\model\Proposal.java
+C:\credit-proposals\src\main\java\br\com\credit\creditproposals\application\service\ProposalService.java
+C:\credit-proposals\src\main\java\br\com\credit\creditproposals\CreditProposalsApplication.java
+C:\credit-proposals\src\main\java\br\com\credit\creditproposals\domain\model\InstallmentStatus.java
+C:\credit-proposals\src\main\java\br\com\credit\creditproposals\domain\repository\ProposalRepository.java
+C:\credit-proposals\src\main\java\br\com\credit\creditproposals\presentation\dto\ProposalRequest.java
