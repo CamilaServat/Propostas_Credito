@@ -1,98 +1,92 @@
 # Sistema de Propostas de Crédito (Backend)
 
-Este projeto é um sistema backend desenvolvido para gerenciar propostas de crédito. 
+Este projeto é um **sistema backend** para gerenciamento de propostas de crédito, desenvolvido em **Java 17 + Spring Boot**, com persistência no **PostgreSQL** e execução simplificada via **Docker Compose**.
 
-É uma API RESTful capaz de:
-
-- Registrar propostas de crédito com validações específicas.
+## Funcionalidades
+- Registrar propostas de crédito com validações.
 - Gerar parcelas associadas às propostas.
 - Consultar propostas e suas parcelas.
 - Registrar pagamentos de parcelas.
-
-Tudo isso com persistência de dados em PostgreSQL.
-
----
-
-# Tecnologias Utilizadas
-
-- Java 17
-- Spring Boot 3.1.2
-- Maven (Gerenciamento de dependências e build)
-- PostgreSQL (Banco de dados relacional via Docker Compose)
-- Spring Data JPA / Hibernate (Mapeamento objeto-relacional)
-- Jakarta Validation + Hibernate Validator (Validação de dados)
-- Docker Compose (Para orquestração do banco PostgreSQL)
+- Persistir dados em banco relacional.
 
 ---
 
-# Como Rodar a Aplicação
+## Tecnologias Utilizadas
 
-## 1. Subir o banco de dados PostgreSQL via Docker Compose
-
-Na raiz do projeto, execute:
-
-```bash
-docker-compose up -d
-```
-
-Isso iniciará um container PostgreSQL na porta 5433.
+- **Java 17**
+- **Spring Boot 3.1.2**
+- **Maven**
+- **PostgreSQL** (via Docker Compose)
+- **Spring Data JPA / Hibernate**
+- **Jakarta Validation + Hibernate Validator**
+- **Docker Compose**
 
 ---
 
-## 2. Executar a aplicação Spring Boot
+## Como Rodar a Aplicação
 
-Na raiz do projeto, rode:
+### Clonar o repositório
 
-```bash
-mvn clean spring-boot:run
-```
+### Subir aplicação + banco de dados
+O projeto já vem com um docker-compose.yml configurado para subir **o PostgreSQL** e **a aplicação** juntos.  
+
+Basta executar:
+
+docker-compose up -d --build
+
+> O parâmetro `--build` só é necessário se for a primeira vez rodando ou se você alterou o código e gerou um novo `.jar`.
 
 ---
 
-## 3. Acesso
+## Se houver alterações no código
+Se você mexeu no código Java, antes de rodar o docker-compose será necessário gerar o `.jar` novamente:
 
-- A API ficará disponível em: `http://localhost:8080`
+mvn clean package -DskipTests
+docker-compose up -d --build
 
 ---
 
-# Endpoints da API
+## Acesso à API
+- Base URL: `http://localhost:8080`
+
+---
+
+## Endpoints e Exemplos (via cURL no CMD/PowerShell)
 
 ## 1. Criar Proposta (POST)
 
-- URL: `/propostas`
-- Payload JSON:
+- URL: /propostas
+- JSON:
 
-```json
+json
 {
   "cpf": "00000000000",
   "valorSolicitado": 100.50,
   "quantidadeParcelas": 12,
   "dataSolicitacao": "2025-05-01"
 }
-```
+
 
 - Exemplo cURL:
 
 ```bash
 curl -X POST http://localhost:8080/propostas -H "Content-Type: application/json" -d "{\"cpf\":\"00000000000\",\"valorSolicitado\":100.50,\"quantidadeParcelas\":12,\"dataSolicitacao\":\"2025-05-01\"}"
 ```
-
 ---
 
 ## 2. Listar Propostas Paginadas (GET)
 
-- URL: `/propostas?page=0&size=10`
+- URL: /propostas?page=0&size=10
 - Exemplo cURL:
 
 ```bash
 curl "http://localhost:8080/propostas?page=0&size=10"
 ```
-
 ---
 
 ## 3. Buscar Proposta por ID (GET)
 
-- URL: `/propostas/{id}`
+- URL: /propostas/{id}
 - Exemplo cURL:
 
 ```bash
@@ -103,7 +97,7 @@ curl http://localhost:8080/propostas/1
 
 ### 4. Pagar Parcela (POST)
 
-- URL: `/propostas/{idProposta}/parcelas/{numeroParcela}/pagar`
+- URL: /propostas/{idProposta}/parcelas/{numeroParcela}/pagar
 - Exemplo cURL:
 
 ```bash
@@ -112,23 +106,14 @@ curl -X POST http://localhost:8080/propostas/1/parcelas/3/pagar
 
 ---
 
-# Funcionalidades Implementadas
-
-- Cadastro de Proposta: valida CPF, valor mínimo (R$100,00), parcelas entre 1 e 24.
-- Geração automática de parcelas com status inicial "Em Aberto".
-- Listagem paginada das propostas com parcelas.
-- Consulta detalhada da proposta pelo ID.
-- Pagamento de parcelas, atualizando status para "Paga".
-- Persistência em PostgreSQL, configurada para rodar com Docker Compose.
-- Validação com Jakarta Validation e Hibernate Validator.
-- Tratamento de erros com respostas HTTP adequadas.
+## Regras de Negócio
+- CPF válido e obrigatório.
+- Valor solicitado **mínimo de R$ 100,00**.
+- Quantidade de parcelas entre **1 e 24**.
+- Parcela só pode ser paga se existir e pertencer à proposta.
+- Respostas com mensagens claras e códigos HTTP adequados.
 
 ---
 
-# Regras de Negócio
-
-- CPF deve ser válido e obrigatório.
-- Valor solicitado deve ser igual ou maior que R$ 100,00.
-- Quantidade de parcelas entre 1 e 24.
-- Parcela só pode ser paga se existir e estiver vinculada à proposta.
-- Erros específicos retornam mensagens claras e status HTTP apropriados.
+## Parar a aplicação
+docker-compose down
