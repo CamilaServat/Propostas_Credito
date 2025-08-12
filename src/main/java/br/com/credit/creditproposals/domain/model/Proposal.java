@@ -9,6 +9,7 @@ import java.util.List;
 import java.math.BigDecimal;
 
 @Entity
+@Table(name = "proposta")
 public class Proposal {
 
     @Id
@@ -16,10 +17,16 @@ public class Proposal {
     private Long id;
 
     @CPF
+    @Column(name = "cpf")
     private String cpf;
 
+    @Column(name = "valor_solicitado")
     private BigDecimal valorSolicitado;
+
+    @Column(name = "quantidade_parcelas")
     private int quantidadeParcelas;
+
+    @Column(name = "data_solicitacao")
     private LocalDate dataSolicitacao;
 
     @OneToMany(mappedBy = "proposta", cascade = CascadeType.ALL, orphanRemoval = true)

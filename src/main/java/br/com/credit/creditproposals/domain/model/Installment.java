@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@Table(name = "parcela")
 public class Installment {
 
     @Id
@@ -12,13 +13,16 @@ public class Installment {
     private Long id;
 
     // Número da parcela dentro da proposta
+    @Column(name = "numero")
     private int numero;
 
     // Valor monetário da parcela
+    @Column(name = "valor")
     private BigDecimal valor;
 
     // Status da parcela (EM_ABERTO, PAGA)
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private InstallmentStatus status;
 
     /**
