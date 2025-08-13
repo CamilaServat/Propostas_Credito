@@ -3,26 +3,29 @@ package br.com.credit.creditproposals.domain.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "parcela")
+@Schema(description = "Representa uma parcela de uma proposta de crédito")
 public class Installment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador único da parcela", example = "1")
     private Long id;
 
-    // Número da parcela dentro da proposta
     @Column(name = "numero")
+    @Schema(description = "Número sequencial da parcela dentro da proposta", example = "1")
     private int numero;
 
-    // Valor monetário da parcela
     @Column(name = "valor")
+    @Schema(description = "Valor monetário da parcela", example = "100.00")
     private BigDecimal valor;
 
-    // Status da parcela (EM_ABERTO, PAGA)
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
+    @Schema(description = "Status atual da parcela", example = "EM_ABERTO", allowableValues = {"EM_ABERTO", "PAGA"})
     private InstallmentStatus status;
 
     /**
@@ -32,6 +35,7 @@ public class Installment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proposta_id")
     @JsonBackReference
+    @Schema(hidden = true) 
     private Proposal proposta;
 
     protected Installment() {

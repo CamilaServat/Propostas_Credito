@@ -7,30 +7,38 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "proposta")
+@Schema(description = "Representa uma proposta de crédito com seus dados e parcelas associadas")
 public class Proposal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador único da proposta", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
     @CPF
     @Column(name = "cpf")
+    @Schema(description = "CPF do solicitante da proposta", example = "12345678910", required = true)
     private String cpf;
 
     @Column(name = "valor_solicitado")
+    @Schema(description = "Valor solicitado para o crédito", example = "1000.00", required = true)
     private BigDecimal valorSolicitado;
 
     @Column(name = "quantidade_parcelas")
+    @Schema(description = "Quantidade de parcelas para pagamento", example = "12", required = true)
     private int quantidadeParcelas;
 
     @Column(name = "data_solicitacao")
+    @Schema(description = "Data da solicitação da proposta", example = "2025-08-12", required = true)
     private LocalDate dataSolicitacao;
 
     @OneToMany(mappedBy = "proposta", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @Schema(description = "Lista de parcelas associadas a esta proposta", accessMode = Schema.AccessMode.READ_ONLY)
     private List<Installment> parcelas = new ArrayList<>();
 
     protected Proposal() {

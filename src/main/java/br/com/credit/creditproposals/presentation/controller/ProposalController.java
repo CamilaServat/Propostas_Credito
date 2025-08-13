@@ -10,9 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.MediaType;
 
 @RestController
-@RequestMapping("/propostas")
+@RequestMapping(value = "/propostas", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProposalController {
 
     private final ProposalService propostaService;
@@ -21,11 +27,12 @@ public class ProposalController {
         this.propostaService = propostaService;
     }
 
-    /**
-     * Cria uma nova proposta de crédito
-     * @param request = Dados da proposta a ser criada
-     * @return ID da proposta criada
-     */
+    @Operation(summary = "Cria uma nova proposta de crédito")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Proposta criada com sucesso",
+            content = @Content(schema = @Schema(implementation = Long.class))),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content)
+    })
     @PostMapping
     public ResponseEntity<Long> criarProposta(@Valid @RequestBody ProposalRequest request) {
         Long id = propostaService.criarProposta(
@@ -37,23 +44,23 @@ public class ProposalController {
         return ResponseEntity.created(URI.create("/propostas/" + id)).body(id);
     }
 
-    /**
-     * Busca uma proposta pelo seu ID
-     * @param id = ID da proposta
-     * @return Proposta encontrada ou 404 se não existir
-     */
+    @Operation(summary = "Busca uma proposta pelo ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Proposta encontrada",
+            content = @Content(schema = @Schema(implementation = Proposal.class))),
+        @ApiResponse(responseCode = "404", description = "Proposta não encontrada", content = @Content)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Proposal> buscarProposta(@PathVariable Long id) {
         Proposal proposta = propostaService.buscarProposta(id);
         return ResponseEntity.ok(proposta);
     }
 
-    /**
-     * Lista todas as propostas paginadas
-     * @param page = Número da página (padrão 0)
-     * @param size = Tamanho da página (padrão 10)
-     * @return Página com propostas
-     */
+    @Operation(summary = "Lista todas as propostas com paginação")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de propostas retornada com sucesso",
+            content = @Content(schema = @Schema(implementation = Page.class)))
+    })
     @GetMapping
     public Page<Proposal> listarPropostas(
             @RequestParam(defaultValue = "0") int page,
@@ -61,12 +68,12 @@ public class ProposalController {
         return propostaService.listarPropostas(PageRequest.of(page, size));
     }
 
-    /**
-     * Realiza o pagamento de uma parcela de uma proposta
-     * @param id = ID da proposta
-     * @param numeroParcela = Número da parcela a ser paga
-     * @return 200 se pagamento OK, 400 em caso de erro
-     */
+    @Operation(summary = "Realiza o pagamento de uma parcela de uma proposta")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Parcela paga com sucesso", content = @Content),
+        @ApiResponse(responseCode = "400", description = "Erro no pagamento da parcela", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Proposta ou parcela não encontrada", content = @Content)
+    })
     @PostMapping("/{id}/parcelas/{numeroParcela}/pagar")
     public ResponseEntity<Void> pagarParcela(
             @PathVariable Long id,

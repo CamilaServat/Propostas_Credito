@@ -3,6 +3,7 @@
 Este projeto é um **sistema backend** para gerenciamento de propostas de crédito, desenvolvido em **Java 17 + Spring Boot**, com persistência no **PostgreSQL** e execução simplificada via **Docker Compose**.
 
 ## Funcionalidades
+
 - Registrar propostas de crédito com validações.
 - Gerar parcelas associadas às propostas.
 - Consultar propostas e suas parcelas.
@@ -20,34 +21,56 @@ Este projeto é um **sistema backend** para gerenciamento de propostas de crédi
 - **Spring Data JPA / Hibernate**
 - **Jakarta Validation + Hibernate Validator**
 - **Docker Compose**
+- **Swagger/OpenAPI** (documentação interativa da API)
 
 ---
 
 ## Como Rodar a Aplicação
 
-### Clonar o repositório
+### 1. Clonar o repositório
 
-### Subir aplicação + banco de dados
-O projeto já vem com um docker-compose.yml configurado para subir **o PostgreSQL** e **a aplicação** juntos.  
+```bash
+git clone https://github.com/CamilaServat/Propostas_Credito.git
+cd Propostas_Credito
+```
 
-Basta executar:
+### 2. Rodar os testes
 
-docker-compose up -d --build
+Para garantir que tudo está funcionando:
 
-> O parâmetro `--build` só é necessário se for a primeira vez rodando ou se você alterou o código e gerou um novo `.jar`.
+```bash
+mvn test
+```
 
----
+### 3. Gerar o `.jar` com Maven
 
-## Se houver alterações no código
-Se você mexeu no código Java, antes de rodar o docker-compose será necessário gerar o `.jar` novamente:
-
+```bash
 mvn clean package -DskipTests
+```
+
+### 4. Subir a aplicação e banco com Docker Compose
+
+Este comando sobe o PostgreSQL e a aplicação juntos, já construindo a imagem automaticamente:
+
+```bash
 docker-compose up -d --build
+```
 
 ---
 
 ## Acesso à API
+
 - Base URL: `http://localhost:8080`
+
+---
+
+## Documentação via Swagger UI
+
+A aplicação já inclui documentação interativa da API com Swagger, disponível em:
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
 
 ---
 
